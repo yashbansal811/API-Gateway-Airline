@@ -3,4 +3,5 @@ module.exports={
     ErrorResponse:require('./error-response'),
     DateTimeHelper:require('./helpers'),
     Enums: require('./enums'),
+    Auth:require('./auth')
 }

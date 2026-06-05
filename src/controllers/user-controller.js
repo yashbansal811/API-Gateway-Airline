@@ -4,11 +4,11 @@ const {StatusCodes}=require('http-status-codes');
 
 async function createUser(req,res){
     try{
-        const response=await UserService.createUser({
+        const user=await UserService.createUser({
         email:req.body.email,
         password:req.body.password
         });
-        SuccessResponse.data=response;
+        SuccessResponse.data=user;
         return res.status(StatusCodes.CREATED).json(SuccessResponse);
     }
     catch(error){
@@ -16,6 +16,22 @@ async function createUser(req,res){
         return res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
+
+async function signin(req,res){
+    try{
+        const jwt=await UserService.signin({
+            email:req.body.email,
+            password:req.body.password
+        });
+        SuccessResponse.data=jwt;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    }
+    catch(error){
+        ErrorResponse.error=error;
+        return res.status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    }
+}
 module.exports={
-    createUser
+    createUser,
+    signin
 }
