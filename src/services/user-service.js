@@ -1,12 +1,15 @@
-const {UserRepository} = require('../repositories');
+const {UserRepository, RoleRepository} = require('../repositories');
 const{AppError}=require('../utils');
 const userRepository=new UserRepository();
+const roleRepository=new RoleRepository();
 const {StatusCodes}=require('http-status-codes');
-const{Auth}=require('../utils/common');
+const{Auth,Enums}=require('../utils/common');
 
 async function createUser(data){
     try{
         const user=await userRepository.create(data);
+        const role=await roleRepository.getRoleByName(Enums.USER_ROLES_ENUMS.CUSTOMER);
+        user.addRole(role); 
         return user;
     }
     catch(error){
@@ -21,6 +24,7 @@ async function createUser(data){
             console.log(explanation);
             throw new AppError(explanation,StatusCodes.BAD_REQUEST);
         }
+        console.log(error);
         throw new AppError('Cannot create a user',StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
