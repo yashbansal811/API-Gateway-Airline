@@ -7,4 +7,5 @@ router.post('/signup',AuthMiddlewares.validateAuthRequest,UserController.createU
 
 router.post('/signin',AuthMiddlewares.validateAuthRequest,UserController.signin);
 
+router.post('/role',AuthMiddlewares.checkAuth, AuthMiddlewares.isAdmin, UserController.addRole);
 module.exports=router;
